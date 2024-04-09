@@ -22,6 +22,14 @@ const orderStatusSchema = new mongoose.Schema({
   },
 });
 
+const shippingDetailsSchema = new mongoose.Schema({
+  deliveryAddress: { type: String, required: true },
+  shipDate: { type: Date, required: true },
+  carrier: { type: String, required: true },
+  trackingNumber: { type: String, required: true },
+  shippingAddress: { type: addressSchema, required: true },
+});
+
 @Schema()
 export class Order {
   @Prop({
@@ -41,7 +49,10 @@ export class Order {
   invoiceDetails: Invoice;
 
   @Prop({ required: true })
-  shippingDetails: typeof addressSchema;
+  orderDate: Date;
+
+  @Prop()
+  shippingDetails: typeof shippingDetailsSchema;
 
   @Prop({ required: true })
   paymentMethod: typeof paymentMethodSchema;
