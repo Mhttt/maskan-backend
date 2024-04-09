@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { Order } from 'src/order/order.schema';
-import { Invoice } from 'src/invoice/invoice.schema';
+import { Order } from 'src/order/schemas/order.schema';
+import { Invoice } from 'src/invoice/schemas/invoice.schema';
 export type CustomerDocument = HydratedDocument<Customer>;
 
 export const addressSchema = new mongoose.Schema({
@@ -14,18 +14,18 @@ export const addressSchema = new mongoose.Schema({
 @Schema()
 export class Customer {
   @Prop({ required: true })
-  email: string;
+  name: string;
 
   @Prop({ required: true })
-  name: string;
+  email: string;
 
   @Prop({ required: true, minlength: 8, maxlength: 8 })
   cvr: number;
 
-  @Prop({ required: true })
+  @Prop({ type: Object, required: true })
   invoiceAddress: typeof addressSchema;
 
-  @Prop({ required: true })
+  @Prop({ type: Object })
   shippingAddress: typeof addressSchema;
 
   @Prop({ required: true })

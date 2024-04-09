@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { Order } from 'src/order/order.schema';
+import { Order } from 'src/order/schemas/order.schema';
 export type InvoiceDocument = HydratedDocument<Invoice>;
 
 @Schema()
