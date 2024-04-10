@@ -5,9 +5,9 @@ import { Invoice } from 'src/invoice/schemas/invoice.schema';
 export type CustomerDocument = HydratedDocument<Customer>;
 
 export const addressSchema = new mongoose.Schema({
-  street: { type: String, required: true },
+  address: { type: String, required: true },
   city: { type: String, required: true },
-  zip: { type: Number, required: true },
+  zip: { type: Number, required: true, minLength: 4, maxLength: 4 },
   country: { type: String, required: true },
 });
 

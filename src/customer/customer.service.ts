@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Customer } from './schemas/customer.schema';
 import mongoose from 'mongoose';
-import { CreateCustomerDto } from './dtos/create-customer.dto';
+import { CreateCustomerDto } from './dto/create-customer.dto';
 
 export interface ICustomerQueryString {
   search: string;
