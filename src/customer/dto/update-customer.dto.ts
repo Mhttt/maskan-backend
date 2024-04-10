@@ -3,60 +3,57 @@ import {
   IsBoolean,
   IsEmail,
   IsNumber,
+  IsOptional,
   IsString,
   Length,
   MinLength,
   ValidateNested,
 } from 'class-validator';
 import { AddressDto } from './address.dto';
-import { InvoiceDto } from 'src/invoice/dto/invoice.dto';
-import { OrderDto } from 'src/order/dto/order.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CustomerDto {
+export class UpdateCustomerDto {
   @IsString()
   @MinLength(2)
-  @ApiProperty()
+  @IsOptional()
+  @ApiProperty({ required: false })
   readonly name: string;
 
   @IsString()
-  @ApiProperty()
+  @IsOptional()
+  @ApiProperty({ required: false })
   readonly company: string;
 
   @IsEmail()
-  @ApiProperty()
+  @IsOptional()
+  @ApiProperty({ required: false })
   readonly email: string;
 
   @IsString()
   @Length(8, 8)
-  @ApiProperty()
+  @IsOptional()
+  @ApiProperty({ required: false })
   readonly cvr: string;
 
   @ValidateNested({ each: true })
   @Type(() => AddressDto)
-  @ApiProperty()
+  @IsOptional()
+  @ApiProperty({ required: false })
   readonly invoiceAddress: AddressDto;
 
   @ValidateNested({ each: true })
   @Type(() => AddressDto)
-  @ApiProperty()
+  @IsOptional()
+  @ApiProperty({ required: false })
   readonly shippingAddress?: AddressDto;
 
-  @ValidateNested({ each: true })
-  @Type(() => OrderDto)
-  @ApiProperty({ type: () => OrderDto })
-  readonly orders: OrderDto[];
-
-  @ValidateNested({ each: true })
-  @Type(() => InvoiceDto)
-  @ApiProperty({ type: () => InvoiceDto })
-  readonly invoices: InvoiceDto[];
-
   @IsBoolean()
-  @ApiProperty()
+  @IsOptional()
+  @ApiProperty({ required: false })
   readonly invoiceAllowed: boolean;
 
   @IsNumber()
-  @ApiProperty()
+  @IsOptional()
+  @ApiProperty({ required: false })
   readonly discountPercentage?: number;
 }

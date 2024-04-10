@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString, Length } from 'class-validator';
+import { IsString, Length } from 'class-validator';
 
 export class AddressDto {
   @IsString()
@@ -14,12 +14,12 @@ export class AddressDto {
   })
   readonly city: string;
 
-  @IsNumber()
+  @IsString()
   @Length(4, 4)
   @ApiProperty({
     example: '1259',
   })
-  readonly zip: number;
+  readonly zip: string;
 
   @IsString()
   @ApiProperty({

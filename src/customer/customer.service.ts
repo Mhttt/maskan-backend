@@ -1,8 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Customer } from './schemas/customer.schema';
 import mongoose from 'mongoose';
 import { CreateCustomerDto } from './dto/create-customer.dto';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 
 export interface ICustomerQueryString {
   search: string;
@@ -39,13 +44,19 @@ export class CustomerService {
   }
 
   async create(customer: CreateCustomerDto): Promise<Customer> {
+    const exists = await this.customerModel.exists({ email: customer.email });
+    if (exists) {
+      throw new ConflictException('Customer email already exist');
+    }
     const newCustomer = await new this.customerModel(customer);
     return newCustomer.save();
   }
 
   async findById(id: string): Promise<Customer> {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new NotFoundException('Invalid customer id');
+      throw new NotFoundException(
+        'The customer with the provided id was not found',
+      );
     }
 
     const customer = await this.customerModel.findById(id);
@@ -57,9 +68,14 @@ export class CustomerService {
     return customer;
   }
 
-  async updateById(id: string, customer: Customer): Promise<Customer> {
+  async updateById(
+    id: string,
+    customer: UpdateCustomerDto,
+  ): Promise<UpdateCustomerDto> {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new NotFoundException('Invalid customer id');
+      throw new NotFoundException(
+        'The customer with the provided id was not found',
+      );
     }
 
     return await this.customerModel.findByIdAndUpdate(id, customer, {
@@ -70,7 +86,9 @@ export class CustomerService {
 
   async deleteById(id: string): Promise<Customer> {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new NotFoundException('Invalid customer id');
+      throw new NotFoundException(
+        'The customer with the provided id was not found',
+      );
     }
 
     return await this.customerModel.findByIdAndDelete(id);

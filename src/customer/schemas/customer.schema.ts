@@ -7,7 +7,7 @@ export type CustomerDocument = HydratedDocument<Customer>;
 export const addressSchema = new mongoose.Schema({
   address: { type: String, required: true },
   city: { type: String, required: true },
-  zip: { type: Number, required: true, minLength: 4, maxLength: 4 },
+  zip: { type: String, required: true, minLength: 4, maxLength: 4 },
   country: { type: String, required: true },
 });
 
@@ -19,7 +19,7 @@ export class Customer {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   email: string;
 
   @Prop({ required: true, minlength: 8, maxlength: 8 })
