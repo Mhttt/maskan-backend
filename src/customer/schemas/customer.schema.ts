@@ -14,13 +14,16 @@ export const addressSchema = new mongoose.Schema({
 @Schema()
 export class Customer {
   @Prop({ required: true })
+  company: string;
+
+  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })
   email: string;
 
   @Prop({ required: true, minlength: 8, maxlength: 8 })
-  cvr: number;
+  cvr: string;
 
   @Prop({ type: Object, required: true })
   invoiceAddress: typeof addressSchema;

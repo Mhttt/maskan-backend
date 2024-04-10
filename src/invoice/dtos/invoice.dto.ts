@@ -1,4 +1,4 @@
-import { OrderDto } from 'src/order/dto/order.dto';
+import { OrderDto } from 'src/order/dtos/order.dto';
 
 export class InvoiceDto {
   readonly order: OrderDto;

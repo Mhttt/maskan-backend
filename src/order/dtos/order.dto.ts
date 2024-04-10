@@ -1,7 +1,7 @@
-import { CustomerDto } from 'src/customer/dto/customer.dto';
-import { InvoiceDto } from 'src/invoice/dto/invoice.dto';
 import { ShippingDetailsDto } from './shippingdetails.dto';
-import { ProductDto } from 'src/product/dto/product.dto';
+import { ProductDto } from 'src/product/dtos/product.dto';
+import { Customer } from 'src/customer/schemas/customer.schema';
+import { Invoice } from 'src/invoice/schemas/invoice.schema';
 
 enum PaymentMethod {
   CREDITCARD = 'CREDITCARD',
@@ -17,9 +17,9 @@ enum OrderStatus {
 
 export class OrderDto {
   readonly orderNumber: number;
-  readonly customer: CustomerDto;
+  readonly customer: Customer;
   readonly price: number;
-  readonly invoice: InvoiceDto;
+  readonly invoice: Invoice;
   readonly orderDate: Date;
   readonly shippingDetails: ShippingDetailsDto;
   readonly paymentMethod: PaymentMethod;
