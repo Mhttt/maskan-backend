@@ -1,8 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { Customer } from 'src/customer/schemas/customer.schema';
 import { Product } from 'src/product/schemas/product.schema';
-import { Invoice } from 'src/invoice/schemas/invoice.schema';
 import { addressSchema } from 'src/customer/schemas/customer.schema';
 export type OrderDocument = HydratedDocument<Order>;
 
@@ -37,16 +35,16 @@ export class Order {
     ref: 'Customer',
     required: true,
   })
-  customer: Customer;
-
-  @Prop({ required: true })
-  price: string;
+  customerId: mongoose.Types.ObjectId;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Invoice',
   })
-  invoiceDetails: Invoice;
+  invoiceId: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ required: true })
+  price: string;
 
   @Prop({ required: true })
   orderDate: Date;

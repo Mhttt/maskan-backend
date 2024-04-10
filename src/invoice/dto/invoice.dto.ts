@@ -1,9 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { OrderDto } from 'src/order/dto/order.dto';
 
 export class InvoiceDto {
   @ApiProperty()
-  readonly order: OrderDto;
+  readonly _id: string;
+
+  @ApiProperty()
+  readonly orderId: string;
+
+  @ApiProperty()
+  readonly customerId: string;
 
   @ApiProperty()
   readonly invoiceNumber: number;

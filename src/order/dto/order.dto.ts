@@ -1,7 +1,5 @@
 import { ShippingDetailsDto } from './shippingdetails.dto';
 import { ProductDto } from 'src/product/dto/product.dto';
-import { Customer } from 'src/customer/schemas/customer.schema';
-import { Invoice } from 'src/invoice/schemas/invoice.schema';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
 
@@ -20,17 +18,17 @@ enum OrderStatus {
 export class OrderDto {
   @IsNumber()
   @ApiProperty()
-  readonly orderNumber: number;
+  readonly _id: string;
 
   @ApiProperty()
-  readonly customer: Customer;
+  readonly customerId: string;
+
+  @ApiProperty()
+  readonly invoiceId: string;
 
   @IsNumber()
   @ApiProperty()
   readonly price: number;
-
-  @ApiProperty()
-  readonly invoice: Invoice;
 
   @ApiProperty()
   readonly orderDate: Date;

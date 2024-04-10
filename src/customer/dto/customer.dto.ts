@@ -14,6 +14,9 @@ import { OrderDto } from 'src/order/dto/order.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CustomerDto {
+  @ApiProperty()
+  readonly _id: string;
+
   @IsString()
   @MinLength(2)
   @ApiProperty()
