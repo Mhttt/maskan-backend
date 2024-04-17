@@ -1,15 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpStatus,
-  Param,
-  Post,
-  Put,
-  Query,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { CustomerService, ICustomerQueryString } from './customer.service';
 import { Customer } from './schemas/customer.schema';
 import { CreateCustomerDto } from './dto/create-customer.dto';
@@ -27,18 +16,11 @@ export class CustomerController {
 
   @Get()
   @ApiOperation({
-    summary:
-      'Get all customers. Allows search as param for searching, or page as param for pagination',
+    summary: 'Get all customers. Allows search as param for searching, or page as param for pagination',
   })
   @ApiResponse({ status: 200, type: [CustomerDto] })
-  @ApiErrorDecorator(
-    HttpStatus.INTERNAL_SERVER_ERROR,
-    'Internal Server',
-    'There was an internal server error',
-  )
-  async getAllCustomers(
-    @Query() query: ICustomerQueryString,
-  ): Promise<Customer[]> {
+  @ApiErrorDecorator(HttpStatus.INTERNAL_SERVER_ERROR, 'Internal Server', 'There was an internal server error')
+  async getAllCustomers(@Query() query: ICustomerQueryString): Promise<Customer[]> {
     return this.customerService.findAll(query);
   }
 
@@ -47,16 +29,8 @@ export class CustomerController {
     summary: 'Get a single customer by id.',
   })
   @ApiResponse({ status: 200, type: CustomerDto })
-  @ApiErrorDecorator(
-    HttpStatus.NOT_FOUND,
-    'Not found',
-    'The customer with the provided id was not found',
-  )
-  @ApiErrorDecorator(
-    HttpStatus.INTERNAL_SERVER_ERROR,
-    'Internal Server',
-    'There was an internal server error',
-  )
+  @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'The customer with the provided id was not found')
+  @ApiErrorDecorator(HttpStatus.INTERNAL_SERVER_ERROR, 'Internal Server', 'There was an internal server error')
   async getCustomerById(
     @Param('id')
     id: string,
@@ -71,16 +45,8 @@ export class CustomerController {
   @ApiBody({
     type: CreateCustomerDto,
   })
-  @ApiErrorDecorator(
-    HttpStatus.BAD_REQUEST,
-    'Bad Request',
-    'Invalid customer input',
-  )
-  @ApiErrorDecorator(
-    HttpStatus.INTERNAL_SERVER_ERROR,
-    'Internal Server',
-    'There was an internal server error',
-  )
+  @ApiErrorDecorator(HttpStatus.BAD_REQUEST, 'Bad Request', 'Invalid customer input')
+  @ApiErrorDecorator(HttpStatus.INTERNAL_SERVER_ERROR, 'Internal Server', 'There was an internal server error')
   async createCustomer(
     @Body(ValidationPipe)
     customer: CreateCustomerDto,
@@ -92,21 +58,9 @@ export class CustomerController {
   @ApiOperation({
     summary: 'Update a single customer by id',
   })
-  @ApiErrorDecorator(
-    HttpStatus.NOT_FOUND,
-    'Not found',
-    'The customer with the provided id was not found',
-  )
-  @ApiErrorDecorator(
-    HttpStatus.BAD_REQUEST,
-    'Bad Request',
-    'Invalid customer input',
-  )
-  @ApiErrorDecorator(
-    HttpStatus.INTERNAL_SERVER_ERROR,
-    'Internal Server',
-    'There was an internal server error',
-  )
+  @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'The customer with the provided id was not found')
+  @ApiErrorDecorator(HttpStatus.BAD_REQUEST, 'Bad Request', 'Invalid customer input')
+  @ApiErrorDecorator(HttpStatus.INTERNAL_SERVER_ERROR, 'Internal Server', 'There was an internal server error')
   async updateCustomer(
     @Param('id')
     id: string,
@@ -121,16 +75,8 @@ export class CustomerController {
   @ApiOperation({
     summary: 'Delete a single customer by id',
   })
-  @ApiErrorDecorator(
-    HttpStatus.NOT_FOUND,
-    'Not found',
-    'The customer with the provided id was not found',
-  )
-  @ApiErrorDecorator(
-    HttpStatus.INTERNAL_SERVER_ERROR,
-    'Internal Server',
-    'There was an internal server error',
-  )
+  @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'The customer with the provided id was not found')
+  @ApiErrorDecorator(HttpStatus.INTERNAL_SERVER_ERROR, 'Internal Server', 'There was an internal server error')
   async deleteCustomer(
     @Param('id')
     id: string,

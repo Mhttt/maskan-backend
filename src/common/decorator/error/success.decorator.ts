@@ -1,9 +1,5 @@
 import { applyDecorators, HttpStatus } from '@nestjs/common';
-import {
-  ApiResponse,
-  ApiResponseOptions,
-  getSchemaPath,
-} from '@nestjs/swagger';
+import { ApiResponse, ApiResponseOptions, getSchemaPath } from '@nestjs/swagger';
 import { SuccessDto } from 'src/common/dto/success.dto';
 export function ApiSuccessDecorator(
   statusCode: HttpStatus,

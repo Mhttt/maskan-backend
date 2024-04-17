@@ -1,13 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsBoolean,
-  IsEmail,
-  IsNumber,
-  IsString,
-  Length,
-  MinLength,
-  ValidateNested,
-} from 'class-validator';
+import { IsBoolean, IsEmail, IsNumber, IsString, Length, MinLength, ValidateNested } from 'class-validator';
 import { AddressDto } from './address.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
