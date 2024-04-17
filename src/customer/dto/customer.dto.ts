@@ -1,13 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsBoolean,
-  IsEmail,
-  IsNumber,
-  IsString,
-  Length,
-  MinLength,
-  ValidateNested,
-} from 'class-validator';
+import { IsBoolean, IsEmail, IsNumber, IsString, Length, MinLength, ValidateNested } from 'class-validator';
 import { AddressDto } from './address.dto';
 import { InvoiceDto } from 'src/invoice/dto/invoice.dto';
 import { OrderDto } from 'src/order/dto/order.dto';

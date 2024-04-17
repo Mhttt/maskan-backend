@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Customer } from './schemas/customer.schema';
 import mongoose from 'mongoose';
@@ -54,9 +50,7 @@ export class CustomerService {
 
   async findById(id: string): Promise<Customer> {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(
-        'The customer with the provided id was not found',
-      );
+      throw new NotFoundException('The customer with the provided id was not found');
     }
 
     const customer = await this.customerModel.findById(id);
@@ -68,14 +62,9 @@ export class CustomerService {
     return customer;
   }
 
-  async updateById(
-    id: string,
-    customer: UpdateCustomerDto,
-  ): Promise<UpdateCustomerDto> {
+  async updateById(id: string, customer: UpdateCustomerDto): Promise<UpdateCustomerDto> {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(
-        'The customer with the provided id was not found',
-      );
+      throw new NotFoundException('The customer with the provided id was not found');
     }
 
     return await this.customerModel.findByIdAndUpdate(id, customer, {
@@ -86,9 +75,7 @@ export class CustomerService {
 
   async deleteById(id: string): Promise<Customer> {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(
-        'The customer with the provided id was not found',
-      );
+      throw new NotFoundException('The customer with the provided id was not found');
     }
 
     return await this.customerModel.findByIdAndDelete(id);

@@ -1,9 +1,5 @@
 import { applyDecorators, HttpStatus } from '@nestjs/common';
-import {
-  ApiResponse,
-  ApiResponseOptions,
-  getSchemaPath,
-} from '@nestjs/swagger';
+import { ApiResponse, ApiResponseOptions, getSchemaPath } from '@nestjs/swagger';
 import { ErrorDto } from 'src/common/dto/error.dto';
 export function ApiErrorDecorator(
   statusCode: HttpStatus,

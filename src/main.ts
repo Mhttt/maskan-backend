@@ -4,10 +4,14 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import fastifyHelmet from '@fastify/helmet';
+import helmet from '@fastify/helmet';
+import fastifyCsrf from '@fastify/csrf-protection';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
+  await app.register(helmet);
+  await app.register(fastifyCsrf);
+  app.enableCors();
 
   app.useStaticAssets({
     root: join(__dirname, '..', 'public'),
@@ -15,17 +19,6 @@ async function bootstrap() {
   });
 
   app.useGlobalPipes(new ValidationPipe());
-
-  app.register(fastifyHelmet, {
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: [`'self'`],
-        styleSrc: [`'self'`, `'unsafe-inline'`],
-        imgSrc: [`'self'`, 'data:', 'validator.swagger.io'],
-        scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
-      },
-    },
-  });
 
   const config = new DocumentBuilder()
     .setTitle('Maskan API Documentation')

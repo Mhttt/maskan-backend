@@ -38,8 +38,7 @@ export class Customer {
   shippingAddress: typeof addressSchema;
 
   @ApiProperty({
-    description:
-      'True if customer is allowed to pay by invoice. Else they can only pay by credit card.',
+    description: 'True if customer is allowed to pay by invoice. Else they can only pay by credit card.',
   })
   @Prop({ required: true })
   invoiceAllowed: boolean;
@@ -53,8 +52,7 @@ export class Customer {
   invoices: Invoice[];
 
   @ApiProperty({
-    description:
-      'The discount amount in percentage pr product this customer should recieve',
+    description: 'The discount amount in percentage pr product this customer should recieve',
   })
   @Prop({ required: true })
   discountPercentage: number;
