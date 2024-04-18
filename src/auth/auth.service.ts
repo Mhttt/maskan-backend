@@ -1,25 +1,33 @@
 import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
-  async signIn(email: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(email);
-
+  async signIn(email: string, pass: string): Promise<{ access_token: string }> {
+    const user = await this.userService.findOne(email);
     try {
       if (await argon2.verify(user.password, pass)) {
-        const { ...result } = user;
-        // TODO: Generate a JWT and return it here
-        // instead of the user object
-        return result;
+        const payload = { subject: user.password, email: user.email };
+        console.log('im here');
+        return {
+          access_token: await this.jwtService.signAsync(payload),
+        };
       } else {
-        return new UnauthorizedException('The password is incorrect');
+        throw new UnauthorizedException('The password is incorrect');
       }
-    } catch (err) {
-      return new InternalServerErrorException('There was an error signing in');
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException('There was an error signing in');
+      }
     }
   }
 }

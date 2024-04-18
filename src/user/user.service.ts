@@ -4,6 +4,7 @@ import { User } from './schemas/user.schema';
 import mongoose from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as argon2 from 'argon2';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -12,14 +13,19 @@ export class UserService {
     private userModel: mongoose.Model<User>,
   ) {}
 
-  async findOne(email: string): Promise<User> {
+  async findOne(email: string): Promise<UserDto> {
     const customer = await this.userModel.findOne({ email: email });
 
     if (!customer) {
       throw new NotFoundException('Customer not found');
     }
 
-    return customer;
+    return {
+      _id: customer._id.toString(),
+      email: customer.email,
+      password: customer.password,
+      roles: customer.roles,
+    };
   }
 
   async create(user: CreateUserDto): Promise<User> {
