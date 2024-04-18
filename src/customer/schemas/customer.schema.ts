@@ -13,6 +13,10 @@ export const addressSchema = new mongoose.Schema({
 });
 @Schema()
 export class Customer {
+  @ApiProperty({ description: 'User Id of the customer' })
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  userId: string;
+
   @ApiProperty({ description: 'Name of the company' })
   @Prop({ required: true })
   company: string;
