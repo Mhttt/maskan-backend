@@ -13,8 +13,7 @@ export const addressSchema = new mongoose.Schema({
 });
 @Schema()
 export class Customer extends Document {
-  @ApiProperty({ description: 'User Id of the customer' })
-  @Prop({ type: mongoose.Types.ObjectId, ref: 'User' })
+  @Prop({ type: Types.ObjectId, ref: 'User' })
   userId: Types.ObjectId;
 
   @ApiProperty({ description: 'Name of the company' })
@@ -48,11 +47,11 @@ export class Customer extends Document {
   invoiceAllowed: boolean;
 
   @ApiProperty({ description: 'All orders the customer has made' })
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }] })
+  @Prop({ type: [{ type: Order, ref: 'Order' }] })
   orders: Order[];
 
   @ApiProperty({ description: 'All invoices for the customer' })
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Invoice' }] })
+  @Prop({ type: [{ type: Invoice, ref: 'Invoice' }] })
   invoices: Invoice[];
 
   @ApiProperty({

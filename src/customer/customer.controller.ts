@@ -48,7 +48,8 @@ export class CustomerController {
   @Roles(Role.ADMIN)
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Create a new customer. Admins only',
+    summary:
+      'Create a new customer. Will also create a User in the user table with default password "Qwer1234". Admins only',
   })
   @ApiBody({
     type: CreateCustomerDto,

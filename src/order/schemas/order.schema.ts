@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
+import mongoose, { Document, HydratedDocument, Types } from 'mongoose';
 import { Product } from 'src/product/schemas/product.schema';
-import { addressSchema } from 'src/customer/schemas/customer.schema';
 export type OrderDocument = HydratedDocument<Order>;
 
 const paymentMethodSchema = new mongoose.Schema({
@@ -20,6 +19,14 @@ const orderStatusSchema = new mongoose.Schema({
   },
 });
 
+//TODO: Should be imported from customer module FIX
+const addressSchema = new mongoose.Schema({
+  address: { type: String, required: true },
+  city: { type: String, required: true },
+  zip: { type: String, required: true, minLength: 4, maxLength: 4 },
+  country: { type: String, required: true },
+});
+
 const shippingDetailsSchema = new mongoose.Schema({
   deliveryAddress: { type: String, required: true },
   shipDate: { type: Date, required: true },
@@ -27,21 +34,20 @@ const shippingDetailsSchema = new mongoose.Schema({
   trackingNumber: { type: String, required: true },
   shippingAddress: { type: addressSchema, required: true },
 });
-
 @Schema()
-export class Order {
+export class Order extends Document {
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: 'Customer',
     required: true,
   })
-  customerId: mongoose.Types.ObjectId;
+  customerId: Types.ObjectId;
 
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: 'Invoice',
   })
-  invoiceId: mongoose.Schema.Types.ObjectId;
+  invoiceId: Types.ObjectId;
 
   @Prop({ required: true })
   price: string;
@@ -49,13 +55,13 @@ export class Order {
   @Prop({ required: true })
   orderDate: Date;
 
-  @Prop({ type: Object })
+  @Prop({ type: Object, required: true })
   shippingDetails: typeof shippingDetailsSchema;
 
   @Prop({ type: Object, required: true })
   paymentMethod: typeof paymentMethodSchema;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Product' })
+  @Prop({ type: Types.ObjectId, ref: 'Product' })
   products: Product[];
 
   @Prop({ type: Object, required: true })

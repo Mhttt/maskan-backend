@@ -39,8 +39,12 @@ export class AuthGuard implements CanActivate {
       if (!requiredRoles.some((role) => payload.roles.includes(role))) {
         throw new UnauthorizedException('Insufficient permissions');
       }
-    } catch {
-      throw new UnauthorizedException();
+    } catch (error) {
+      if (error instanceof UnauthorizedException && error.message) {
+        throw error;
+      } else {
+        throw new UnauthorizedException();
+      }
     }
     return true;
   }
