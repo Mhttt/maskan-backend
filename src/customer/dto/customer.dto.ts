@@ -9,6 +9,9 @@ export class CustomerDto {
   @ApiProperty()
   readonly _id: string;
 
+  @ApiProperty()
+  readonly userId: string;
+
   @IsString()
   @MinLength(2)
   @ApiProperty()

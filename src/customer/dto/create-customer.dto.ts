@@ -1,7 +1,8 @@
 import { Type } from 'class-transformer';
-import { IsBoolean, IsEmail, IsNumber, IsString, Length, MinLength, ValidateNested } from 'class-validator';
+import { IsArray, IsBoolean, IsEmail, IsNumber, IsString, Length, MinLength, ValidateNested } from 'class-validator';
 import { AddressDto } from './address.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { Role } from 'src/user/schemas/user.schema';
 
 export class CreateCustomerDto {
   @IsString()
@@ -53,4 +54,12 @@ export class CreateCustomerDto {
   @IsNumber()
   @ApiProperty()
   readonly discountPercentage?: number;
+
+  @IsArray()
+  @Type(() => AddressDto)
+  @ApiProperty({
+    example: ['user'],
+    required: true,
+  })
+  readonly roles: Role[];
 }

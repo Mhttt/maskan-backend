@@ -24,6 +24,7 @@ async function bootstrap() {
     .setTitle('Maskan API Documentation')
     .setDescription('This page documents the entire API behind Maskan')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

@@ -4,7 +4,7 @@ import { Customer } from './schemas/customer.schema';
 import mongoose from 'mongoose';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
-
+import { UserService } from 'src/user/user.service';
 export interface ICustomerQueryString {
   search: string;
   page: number;
@@ -14,6 +14,7 @@ export class CustomerService {
   constructor(
     @InjectModel(Customer.name)
     private customerModel: mongoose.Model<Customer>,
+    private userService: UserService,
   ) {}
 
   async findAll(query: ICustomerQueryString): Promise<Customer[]> {
@@ -44,7 +45,16 @@ export class CustomerService {
     if (exists) {
       throw new ConflictException('Customer email already exist');
     }
-    const newCustomer = await new this.customerModel(customer);
+
+    const newUser = await this.userService.create({
+      email: customer.email,
+      password: 'Qwer1234',
+      roles: customer.roles,
+    });
+
+    await newUser.save();
+
+    const newCustomer = await new this.customerModel({ ...customer, userId: newUser._id });
     return newCustomer.save();
   }
 

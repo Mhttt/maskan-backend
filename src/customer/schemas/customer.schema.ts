@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
+import mongoose, { Document, HydratedDocument, Types } from 'mongoose';
 import { Order } from 'src/order/schemas/order.schema';
 import { Invoice } from 'src/invoice/schemas/invoice.schema';
 import { ApiProperty } from '@nestjs/swagger';
@@ -12,10 +12,10 @@ export const addressSchema = new mongoose.Schema({
   country: { type: String, required: true },
 });
 @Schema()
-export class Customer {
+export class Customer extends Document {
   @ApiProperty({ description: 'User Id of the customer' })
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
-  userId: string;
+  @Prop({ type: mongoose.Types.ObjectId, ref: 'User' })
+  userId: Types.ObjectId;
 
   @ApiProperty({ description: 'Name of the company' })
   @Prop({ required: true })

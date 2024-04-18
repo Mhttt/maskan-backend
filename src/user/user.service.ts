@@ -36,8 +36,8 @@ export class UserService {
 
     try {
       const hash = await argon2.hash(user.password);
-      const newCustomer = await new this.userModel({ ...user, password: hash });
-      return newCustomer.save();
+      const newUser = await new this.userModel({ ...user, password: hash }).save();
+      return newUser;
     } catch (err) {
       throw new InternalServerErrorException('There was an error creating the user');
     }
