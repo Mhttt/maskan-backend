@@ -1,8 +1,7 @@
-import { Body, Controller, Get, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignInDto } from './dto/signin.dto';
-import { AuthGuard } from './auth.guard';
 import { Public } from 'src/common/decorator/error/routeAuth.decorator';
 import { ApiErrorDecorator } from 'src/common/decorator/error/error.decorator';
 
@@ -21,11 +20,5 @@ export class AuthController {
   @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'Customer not found')
   signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto.email, signInDto.password);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get('user')
-  getProfile(@Request() req) {
-    return req.user;
   }
 }

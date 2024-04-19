@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Document, HydratedDocument } from 'mongoose';
-export type CustomerDocument = HydratedDocument<User>;
+import { Document } from 'mongoose';
+export type UserDocument = Document;
 
 export enum Role {
   ADMIN = 'admin',
