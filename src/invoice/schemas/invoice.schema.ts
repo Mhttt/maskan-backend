@@ -21,7 +21,7 @@ export class Invoice extends Document {
   @ApiProperty()
   OrderId: Types.ObjectId;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true }) //TODO: Should be unique and incremented by one each time FIX
   @ApiProperty()
   invoiceNumber: number;
 

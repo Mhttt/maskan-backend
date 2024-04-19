@@ -49,11 +49,11 @@ export class Customer extends Document {
   invoiceAllowed: boolean;
 
   @ApiProperty({ description: 'All orders the customer has made' })
-  @Prop({ type: [{ type: Order, ref: 'Order' }] })
+  @Prop({ type: [{ type: Order, ref: 'Order' }], required: false })
   orders: Order[];
 
   @ApiProperty({ description: 'All invoices for the customer' })
-  @Prop({ type: [{ type: Invoice, ref: 'Invoice' }] })
+  @Prop({ type: [{ type: Invoice, ref: 'Invoice' }], required: false })
   invoices: Invoice[];
 
   @ApiProperty({

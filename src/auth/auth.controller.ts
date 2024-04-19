@@ -16,7 +16,7 @@ export class AuthController {
   @ApiOperation({
     summary: 'Login with email and password',
   })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Returns access token' })
+  @ApiResponse({ status: HttpStatus.CREATED, description: 'Returns access token' })
   @ApiErrorDecorator(HttpStatus.UNAUTHORIZED, 'Unathorized', 'Not authorized')
   @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'Customer not found')
   signIn(@Body() signInDto: SignInDto) {

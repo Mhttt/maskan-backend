@@ -6,7 +6,6 @@ import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { UserService } from 'src/user/user.service';
 import { CreateCustomerAsAdminDto } from './dto/create-customer-admin.dto';
 import { CreateCustomerAsUserDto } from './dto/create-customer-user.dto';
-import { encryptPassword } from 'src/common/util/password';
 import { Role } from 'src/user/schemas/user.schema';
 export interface ICustomerQueryString {
   search: string;
@@ -51,7 +50,7 @@ export class CustomerService {
 
     const newUser = await this.userService.create({
       email: customer.email.toLowerCase(),
-      password: 'Qwer1234',
+      password: 'Qwer1234', //TODO: Should probably not be in plain text here
       roles: customer.roles,
     });
 
@@ -71,10 +70,9 @@ export class CustomerService {
       throw new ConflictException('Customer email already exist');
     }
 
-    const hash = await encryptPassword(customer.password);
     const newUser = await this.userService.create({
       email: customer.email.toLowerCase(),
-      password: hash,
+      password: customer.password,
       roles: [Role.USER],
     });
 
