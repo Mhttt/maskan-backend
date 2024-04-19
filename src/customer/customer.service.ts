@@ -44,32 +44,36 @@ export class CustomerService {
   }
 
   async createAsAdmin(customer: CreateCustomerAsAdminDto): Promise<Customer> {
-    const exists = await this.customerModel.exists({ email: customer.email });
+    const exists = await this.customerModel.exists({ email: customer.email.toLowerCase() });
     if (exists) {
       throw new ConflictException('Customer email already exist');
     }
 
     const newUser = await this.userService.create({
-      email: customer.email,
+      email: customer.email.toLowerCase(),
       password: 'Qwer1234',
       roles: customer.roles,
     });
 
     await newUser.save();
 
-    const newCustomer = await new this.customerModel({ ...customer, userId: newUser._id });
+    const newCustomer = await new this.customerModel({
+      ...customer,
+      userId: newUser._id,
+      email: customer.email.toLowerCase(),
+    });
     return newCustomer.save();
   }
 
   async createAsUser(customer: CreateCustomerAsUserDto): Promise<Customer> {
-    const exists = await this.customerModel.exists({ email: customer.email });
+    const exists = await this.customerModel.exists({ email: customer.email.toLowerCase() });
     if (exists) {
       throw new ConflictException('Customer email already exist');
     }
 
     const hash = await encryptPassword(customer.password);
     const newUser = await this.userService.create({
-      email: customer.email,
+      email: customer.email.toLowerCase(),
       password: hash,
       roles: [Role.USER],
     });
@@ -79,6 +83,7 @@ export class CustomerService {
     const newCustomer = await new this.customerModel({
       ...customer,
       userId: newUser._id,
+      email: customer.email.toLowerCase(),
       invoiceAllowed: false,
       discountPercentage: 0,
     });

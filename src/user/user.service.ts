@@ -14,7 +14,7 @@ export class UserService {
   ) {}
 
   async findOne(email: string): Promise<UserDto> {
-    const customer = await this.userModel.findOne({ email: email });
+    const customer = await this.userModel.findOne({ email: email.toLowerCase() });
 
     if (!customer) {
       throw new NotFoundException('Customer not found');
@@ -29,14 +29,14 @@ export class UserService {
   }
 
   async create(user: CreateUserDto): Promise<User> {
-    const exists = await this.userModel.exists({ email: user.email });
+    const exists = await this.userModel.exists({ email: user.email.toLowerCase() });
     if (exists) {
       throw new ConflictException('User email already exist');
     }
 
     try {
       const hash = await encryptPassword(user.password);
-      const newUser = await new this.userModel({ ...user, password: hash }).save();
+      const newUser = await new this.userModel({ ...user, email: user.email.toLowerCase(), password: hash }).save();
       return newUser;
     } catch (err) {
       throw new InternalServerErrorException('There was an error creating the user');
