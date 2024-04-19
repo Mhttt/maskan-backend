@@ -55,16 +55,16 @@ export class Order extends Document {
   @Prop({ required: true })
   orderDate: Date;
 
-  @Prop({ type: Object, required: true })
+  @Prop({ type: shippingDetailsSchema, required: true })
   shippingDetails: typeof shippingDetailsSchema;
 
-  @Prop({ type: Object, required: true })
+  @Prop({ type: paymentMethodSchema, required: true })
   paymentMethod: typeof paymentMethodSchema;
 
   @Prop({ type: Types.ObjectId, ref: 'Product' })
   products: Product[];
 
-  @Prop({ type: Object, required: true })
+  @Prop({ type: orderStatusSchema, required: true })
   status: typeof orderStatusSchema;
 
   @Prop()

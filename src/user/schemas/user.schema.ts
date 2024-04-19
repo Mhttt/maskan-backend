@@ -10,9 +10,6 @@ export enum Role {
 
 @Schema()
 export class User extends Document {
-  @ApiProperty({ description: 'MongoDB _id of the user' }) // Add this line
-  _id: string; // Add this line
-
   @ApiProperty({ description: 'Email of the user' })
   @Prop({ required: true })
   email: string;

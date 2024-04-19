@@ -2,9 +2,12 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectModel } from '@nestjs/mongoose';
 import { Customer } from './schemas/customer.schema';
 import { Model, Types } from 'mongoose';
-import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { UserService } from 'src/user/user.service';
+import { CreateCustomerAsAdminDto } from './dto/create-customer-admin.dto';
+import { CreateCustomerAsUserDto } from './dto/create-customer-user.dto';
+import { encryptPassword } from 'src/common/util/password';
+import { Role } from 'src/user/schemas/user.schema';
 export interface ICustomerQueryString {
   search: string;
   page: number;
@@ -40,7 +43,7 @@ export class CustomerService {
     return customers;
   }
 
-  async create(customer: CreateCustomerDto): Promise<Customer> {
+  async createAsAdmin(customer: CreateCustomerAsAdminDto): Promise<Customer> {
     const exists = await this.customerModel.exists({ email: customer.email });
     if (exists) {
       throw new ConflictException('Customer email already exist');
@@ -55,6 +58,30 @@ export class CustomerService {
     await newUser.save();
 
     const newCustomer = await new this.customerModel({ ...customer, userId: newUser._id });
+    return newCustomer.save();
+  }
+
+  async createAsUser(customer: CreateCustomerAsUserDto): Promise<Customer> {
+    const exists = await this.customerModel.exists({ email: customer.email });
+    if (exists) {
+      throw new ConflictException('Customer email already exist');
+    }
+
+    const hash = await encryptPassword(customer.password);
+    const newUser = await this.userService.create({
+      email: customer.email,
+      password: hash,
+      roles: [Role.USER],
+    });
+
+    await newUser.save();
+
+    const newCustomer = await new this.customerModel({
+      ...customer,
+      userId: newUser._id,
+      invoiceAllowed: false,
+      discountPercentage: 0,
+    });
     return newCustomer.save();
   }
 

@@ -11,9 +11,11 @@ export const addressSchema = new mongoose.Schema({
   zip: { type: String, required: true, minLength: 4, maxLength: 4 },
   country: { type: String, required: true },
 });
+
 @Schema()
 export class Customer extends Document {
-  @Prop({ type: Types.ObjectId, ref: 'User' })
+  @ApiProperty({ type: String, description: 'User Id of the created customer' })
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   userId: Types.ObjectId;
 
   @ApiProperty({ description: 'Name of the company' })
@@ -33,11 +35,11 @@ export class Customer extends Document {
   cvr: string;
 
   @ApiProperty({ description: 'Invoice address details' })
-  @Prop({ type: Object, required: true })
+  @Prop({ type: addressSchema, required: true })
   invoiceAddress: typeof addressSchema;
 
   @ApiProperty({ description: 'Shipping address details' })
-  @Prop({ type: Object, required: true })
+  @Prop({ type: addressSchema, required: true })
   shippingAddress: typeof addressSchema;
 
   @ApiProperty({

@@ -1,9 +1,10 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignInDto } from './dto/signin.dto';
 import { AuthGuard } from './auth.guard';
 import { Public } from 'src/common/decorator/error/routeAuth.decorator';
+import { ApiErrorDecorator } from 'src/common/decorator/error/error.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -11,8 +12,13 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Public()
-  @HttpCode(HttpStatus.OK)
   @Post('login')
+  @ApiOperation({
+    summary: 'Login with email and password',
+  })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Returns access token' })
+  @ApiErrorDecorator(HttpStatus.UNAUTHORIZED, 'Unathorized', 'Not authorized')
+  @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'Customer not found')
   signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto.email, signInDto.password);
   }

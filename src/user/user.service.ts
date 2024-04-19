@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
-import * as argon2 from 'argon2';
 import { UserDto } from './dto/user.dto';
+import { encryptPassword } from 'src/common/util/password';
 
 @Injectable()
 export class UserService {
@@ -35,7 +35,7 @@ export class UserService {
     }
 
     try {
-      const hash = await argon2.hash(user.password);
+      const hash = await encryptPassword(user.password);
       const newUser = await new this.userModel({ ...user, password: hash }).save();
       return newUser;
     } catch (err) {
