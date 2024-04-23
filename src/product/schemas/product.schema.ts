@@ -1,6 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 export type ProductDocument = HydratedDocument<Product>;
+
+export const variantSchema = new mongoose.Schema({
+  productId: { type: mongoose.Types.ObjectId, ref: 'Product', required: true },
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+});
 
 @Schema()
 export class Product {
@@ -14,7 +20,7 @@ export class Product {
   description: string;
 
   @Prop()
-  images: File[];
+  images: string[];
 
   @Prop()
   stock: number;
@@ -22,8 +28,8 @@ export class Product {
   @Prop()
   sku: number;
 
-  @Prop()
-  variant: string;
+  @Prop({ type: variantSchema })
+  variant: typeof variantSchema;
 
   @Prop()
   category: string[];

@@ -1,7 +1,8 @@
 import { ShippingDetailsDto } from './shippingdetails.dto';
 import { ProductDto } from 'src/product/dto/product.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
+import { IsArray, IsDate, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
 enum PaymentMethod {
   CREDITCARD = 'CREDITCARD',
@@ -16,13 +17,15 @@ enum OrderStatus {
 }
 
 export class OrderDto {
-  @IsNumber()
+  @IsString()
   @ApiProperty()
   readonly _id: string;
 
+  @IsString()
   @ApiProperty()
   readonly customerId: string;
 
+  @IsString()
   @ApiProperty()
   readonly invoiceId: string;
 
@@ -30,21 +33,27 @@ export class OrderDto {
   @ApiProperty()
   readonly price: number;
 
+  @IsDate()
   @ApiProperty()
   readonly orderDate: Date;
 
+  @ValidateNested({ each: true })
+  @Type(() => ShippingDetailsDto)
   @ApiProperty()
   readonly shippingDetails: ShippingDetailsDto;
 
   @ApiProperty()
   readonly paymentMethod: PaymentMethod;
 
+  @ValidateNested({ each: true })
+  @Type(() => ProductDto)
   @ApiProperty()
   readonly products: ProductDto[];
 
   @ApiProperty()
   readonly status: OrderStatus;
 
+  @IsArray()
   @ApiProperty()
   readonly history: string[];
 }

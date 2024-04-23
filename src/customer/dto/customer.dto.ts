@@ -7,9 +7,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Role } from 'src/user/schemas/user.schema';
 
 export class CustomerDto {
+  @IsString()
   @ApiProperty()
   readonly _id: string;
 
+  @IsString()
   @ApiProperty()
   readonly userId: string;
 
