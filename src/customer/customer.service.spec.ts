@@ -10,6 +10,31 @@ describe('CustomerService', () => {
   let customerService: CustomerService;
   let model: Model<Customer>;
 
+  const mockCustomer = {
+    _id: '6627abe2546f443329233323',
+    userId: '6627abe2546f443329233320',
+    company: 'Test Company',
+    name: 'Test Name',
+    email: 'Test@email.com',
+    cvr: '12345678',
+    invoiceAddress: {
+      street: 'Test Street',
+      city: 'Test City',
+      zip: '1234',
+      country: 'Test Country',
+    },
+    shippingAddress: {
+      street: 'Test Street',
+      city: 'Test City',
+      zip: '1234',
+      country: 'Test Country',
+    },
+    discountPercentage: 10,
+    invoiceAllowed: true,
+    orders: [],
+    invoices: [],
+  };
+
   beforeEach(async () => {
     const mockCustomerService = {
       findById: jest.fn(),
@@ -34,31 +59,6 @@ describe('CustomerService', () => {
 
   describe('findById', () => {
     it('should find and return a customer by ID', async () => {
-      const mockCustomer = {
-        _id: '6627abe2546f443329233323',
-        userId: '6627abe2546f443329233320',
-        company: 'Test Company',
-        name: 'Test Name',
-        email: 'Test@email.com',
-        cvr: '12345678',
-        invoiceAddress: {
-          street: 'Test Street',
-          city: 'Test City',
-          zip: '1234',
-          country: 'Test Country',
-        },
-        shippingAddress: {
-          street: 'Test Street',
-          city: 'Test City',
-          zip: '1234',
-          country: 'Test Country',
-        },
-        discountPercentage: 10,
-        invoiceAllowed: true,
-        orders: [],
-        invoices: [],
-      };
-
       jest.spyOn(model, 'findById').mockResolvedValue(mockCustomer);
 
       const result = await customerService.findById(mockCustomer._id);
