@@ -23,7 +23,7 @@ export class CreateUserAsAdminDto {
 
   @IsEmail()
   @ApiProperty({
-    example: 'John@gmail.com',
+    example: 'john@gmail.com',
     required: true,
   })
   readonly email: string;

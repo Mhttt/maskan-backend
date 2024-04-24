@@ -26,7 +26,7 @@ export class Product {
   stock: number;
 
   @Prop()
-  sku: number;
+  sku: string;
 
   @Prop({ type: variantSchema })
   variant: typeof variantSchema;

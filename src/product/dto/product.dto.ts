@@ -28,9 +28,9 @@ export class ProductDto {
   @ApiProperty()
   readonly stock: number;
 
-  @IsNumber()
+  @IsString()
   @ApiProperty()
-  readonly sku: number;
+  readonly sku: string;
 
   @ValidateNested({ each: true })
   @Type(() => VariantDto)

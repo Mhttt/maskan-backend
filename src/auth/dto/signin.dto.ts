@@ -4,7 +4,7 @@ import { IsString } from 'class-validator';
 export class SignInDto {
   @IsString()
   @ApiProperty({
-    example: 'John@gmail.com',
+    example: 'john@gmail.com',
   })
   readonly email: string;
 

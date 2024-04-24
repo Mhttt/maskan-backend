@@ -19,7 +19,7 @@ export class CreateUserAsCustomerDto {
 
   @IsEmail()
   @ApiProperty({
-    example: 'John@gmail.com',
+    example: 'john@gmail.com',
   })
   readonly email: string;
 

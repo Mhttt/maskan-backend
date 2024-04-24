@@ -19,7 +19,6 @@ export class UserService {
   ) {}
 
   async findAll(query: IUserQueryString): Promise<User[]> {
-    //TODO: Move to helper function and add to productpage
     const resPerPage = 10;
     const currentPage = Number(query.page) || 1;
     const skip = resPerPage * (currentPage - 1);
@@ -95,7 +94,7 @@ export class UserService {
 
     return {
       _id: customer._id.toString(),
-      email: customer.email,
+      email: customer.email.toLowerCase(),
       password: customer.password,
       roles: customer.roles,
     };
