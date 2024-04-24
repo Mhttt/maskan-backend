@@ -64,7 +64,7 @@ export class UserController extends BaseController {
     return await this.userService.createAsAdmin(user);
   }
 
-  @Post('/user')
+  @Post('/customer')
   @Public()
   @ApiOperation({
     summary: 'Create a new user as a customer. No authentication required',
