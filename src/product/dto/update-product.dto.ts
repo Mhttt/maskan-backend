@@ -3,45 +3,41 @@ import { VariantDto } from './variant.dto';
 import { IsArray, IsNumber, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class ProductDto {
+export class UpdateProductDto {
   @IsString()
-  @ApiProperty()
-  readonly _id: string;
-
-  @IsString()
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly name: string;
 
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly description: string;
 
   @IsNumber()
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly price: number;
 
   @IsNumber()
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly stock: number;
 
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly sku: string;
 
   @ValidateNested({ each: true })
   @Type(() => VariantDto)
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly variant: VariantDto;
 
   @IsArray()
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly images: string[];
 
   @IsArray()
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly category: string[];
 
   @IsArray()
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly industry: string[];
 }

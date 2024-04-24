@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignInDto } from './dto/signin.dto';
@@ -18,7 +18,7 @@ export class AuthController {
   @ApiResponse({ status: HttpStatus.CREATED, description: 'Returns access token' })
   @ApiErrorDecorator(HttpStatus.UNAUTHORIZED, 'Unathorized', 'Not authorized')
   @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'Customer not found')
-  signIn(@Body() signInDto: SignInDto) {
+  signIn(@Body(ValidationPipe) signInDto: SignInDto) {
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
 }

@@ -92,7 +92,7 @@ export class UserController extends BaseController {
   async updateUser(
     @Param('id')
     id: string,
-    @Body()
+    @Body(ValidationPipe)
     user: UpdateCustomerDto,
   ): Promise<UpdateCustomerDto> {
     return this.userService.updateById(id, user);

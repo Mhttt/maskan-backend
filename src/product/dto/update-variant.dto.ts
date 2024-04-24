@@ -1,20 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsString } from 'class-validator';
 
-export class VariantDto {
+export class UpdateVariantDto {
   @IsString()
-  @ApiProperty()
-  readonly _id: string;
-
-  @IsString()
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly name: string;
 
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly description: string;
 
   @IsArray()
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly images: string[];
 }
