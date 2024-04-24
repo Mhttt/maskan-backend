@@ -37,8 +37,8 @@ export class ProductController extends BaseController {
     type: CreateProductDto,
   })
   @ApiResponse({ status: HttpStatus.CREATED, type: Product })
-  @ApiErrorDecorator(HttpStatus.BAD_REQUEST, 'Bad Request', 'Invalid User input')
-  async createUserAsAdmin(
+  @ApiErrorDecorator(HttpStatus.BAD_REQUEST, 'Bad Request', 'Invalid Product input')
+  async createProduct(
     @Body(ValidationPipe)
     product: CreateProductDto,
   ): Promise<Product> {
