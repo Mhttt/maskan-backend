@@ -53,13 +53,13 @@ export class ProductService {
       throw new NotFoundException('The product with the provided id was not found');
     }
 
-    const user = await this.productModel.findById(id);
+    const product = await this.productModel.findById(id);
 
-    if (!user) {
+    if (!product) {
       throw new NotFoundException('Product not found');
     }
 
-    return user;
+    return product;
   }
 
   async updateById(id: string, product: UpdateProductDto): Promise<UpdateProductDto> {
