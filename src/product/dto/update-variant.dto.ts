@@ -3,14 +3,14 @@ import { IsArray, IsString } from 'class-validator';
 
 export class UpdateVariantDto {
   @IsString()
-  @ApiProperty({ required: false })
+  @ApiProperty({ example: 'My Variant', required: false })
   readonly name: string;
 
   @IsString()
-  @ApiProperty({ required: false })
+  @ApiProperty({ example: 'Variant description', required: false })
   readonly description: string;
 
   @IsArray()
-  @ApiProperty({ required: false })
+  @ApiProperty({ example: ['variantimage1.com', 'variantimage2.com'], required: false })
   readonly images: string[];
 }
