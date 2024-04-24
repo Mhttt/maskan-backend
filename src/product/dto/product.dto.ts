@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { VariantDto } from './variant.dto';
-import { IsArray, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class ProductDto {
@@ -32,6 +32,7 @@ export class ProductDto {
   @ApiProperty()
   readonly sku: number;
 
+  @ValidateNested({ each: true })
   @Type(() => VariantDto)
   @ApiProperty()
   readonly variant: VariantDto;

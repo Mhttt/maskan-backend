@@ -1,8 +1,9 @@
 import { ShippingDetailsDto } from './shippingdetails.dto';
 import { ProductDto } from 'src/product/dto/product.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsDate, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { IsNumber, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import * as dayjs from 'dayjs';
 
 enum PaymentMethod {
   CREDITCARD = 'CREDITCARD',
@@ -19,10 +20,6 @@ enum OrderStatus {
 export class OrderDto {
   @IsString()
   @ApiProperty()
-  readonly _id: string;
-
-  @IsString()
-  @ApiProperty()
   readonly customerId: string;
 
   @IsString()
@@ -33,9 +30,9 @@ export class OrderDto {
   @ApiProperty()
   readonly price: number;
 
-  @IsDate()
-  @ApiProperty()
-  readonly orderDate: Date;
+  @IsString()
+  @ApiProperty({ example: dayjs(Date.now()).format('YYYY-MM-DDTHH:mm:ssZ[Z]') })
+  readonly orderDate: string;
 
   @ValidateNested({ each: true })
   @Type(() => ShippingDetailsDto)
@@ -52,8 +49,4 @@ export class OrderDto {
 
   @ApiProperty()
   readonly status: OrderStatus;
-
-  @IsArray()
-  @ApiProperty()
-  readonly history: string[];
 }

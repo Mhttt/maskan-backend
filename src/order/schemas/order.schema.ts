@@ -1,39 +1,50 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, HydratedDocument, Types } from 'mongoose';
-import { Product } from 'src/product/schemas/product.schema';
 export type OrderDocument = HydratedDocument<Order>;
 
-const paymentMethodSchema = new mongoose.Schema({
-  method: {
-    type: String,
-    enum: ['CREDITCARD', 'INVOICE'],
-    default: 'CREDITCARD',
+const paymentMethodSchema = new mongoose.Schema(
+  {
+    method: {
+      type: String,
+      enum: ['CREDITCARD', 'INVOICE'],
+      default: 'CREDITCARD',
+    },
   },
-});
+  { _id: false },
+);
 
-const orderStatusSchema = new mongoose.Schema({
-  status: {
-    type: String,
-    enum: ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED'],
-    default: 'PENDING',
+const orderStatusSchema = new mongoose.Schema(
+  {
+    status: {
+      type: String,
+      enum: ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED'],
+      default: 'PENDING',
+    },
   },
-});
+  { _id: false },
+);
 
 //TODO: Should be imported from customer module FIX
-const addressSchema = new mongoose.Schema({
-  address: { type: String, required: true },
-  city: { type: String, required: true },
-  zip: { type: String, required: true, minLength: 4, maxLength: 4 },
-  country: { type: String, required: true },
-});
+const addressSchema = new mongoose.Schema(
+  {
+    address: { type: String, required: true },
+    city: { type: String, required: true },
+    zip: { type: String, required: true, minLength: 4, maxLength: 4 },
+    country: { type: String, required: true },
+  },
+  { _id: false },
+);
 
-const shippingDetailsSchema = new mongoose.Schema({
-  deliveryAddress: { type: String, required: true },
-  shipDate: { type: Date, required: true },
-  carrier: { type: String, required: true },
-  trackingNumber: { type: String, required: true },
-  shippingAddress: { type: addressSchema, required: true },
-});
+const shippingDetailsSchema = new mongoose.Schema(
+  {
+    deliveryAddress: { type: String, required: true },
+    shipDate: { type: Date, required: true },
+    carrier: { type: String, required: true },
+    trackingNumber: { type: String, required: true },
+    shippingAddress: { type: addressSchema, required: true },
+  },
+  { _id: false },
+);
 @Schema()
 export class Order extends Document {
   @Prop({
@@ -62,13 +73,10 @@ export class Order extends Document {
   paymentMethod: typeof paymentMethodSchema;
 
   @Prop({ type: Types.ObjectId, ref: 'Product' })
-  products: Product[];
+  products: Types.ObjectId[];
 
   @Prop({ type: orderStatusSchema, required: true })
   status: typeof orderStatusSchema;
-
-  @Prop()
-  history: string[];
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

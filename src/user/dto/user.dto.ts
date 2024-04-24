@@ -1,31 +1,64 @@
-import { IsArray, IsEmail, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsEmail, IsString, Length, MinLength, ValidateNested } from 'class-validator';
+import { AddressDto } from './address.dto';
+import { InvoiceDto } from 'src/invoice/dto/invoice.dto';
+import { OrderDto } from 'src/order/dto/order.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from '../schemas/user.schema';
+import { Role } from 'src/user/schemas/user.schema';
+import { UserConfigsDto } from './userConfig.dto';
 
-export class UserDto {
-  @ApiProperty({
-    example: '6620e69a8949d57655546d9b',
-    required: true,
-  })
+export class CustomerDto {
+  @IsString()
+  @ApiProperty()
   readonly _id: string;
 
+  @IsString()
+  @MinLength(2)
+  @ApiProperty()
+  readonly name: string;
+
+  @IsString()
+  @ApiProperty()
+  readonly company: string;
+
   @IsEmail()
-  @ApiProperty({
-    example: 'John@gmail.com',
-    required: true,
-  })
+  @ApiProperty()
   readonly email: string;
 
   @IsString()
-  @ApiProperty({
-    example: 'Mypassword123',
-    required: true,
-  })
-  readonly password: string;
+  @Length(8, 8)
+  @ApiProperty()
+  readonly cvr: string;
+
+  @ValidateNested({ each: true })
+  @Type(() => AddressDto)
+  @ApiProperty()
+  readonly invoiceAddress: AddressDto;
+
+  @ValidateNested({ each: true })
+  @Type(() => AddressDto)
+  @ApiProperty()
+  readonly shippingAddress: AddressDto;
+
+  @ValidateNested({ each: true })
+  @Type(() => OrderDto)
+  @ApiProperty({ type: () => OrderDto })
+  readonly orders: OrderDto[];
+
+  @ValidateNested({ each: true })
+  @Type(() => InvoiceDto)
+  @ApiProperty({ type: () => InvoiceDto })
+  readonly invoices: InvoiceDto[];
+
+  @ValidateNested({ each: true })
+  @Type(() => UserConfigsDto)
+  @ApiProperty()
+  readonly userConfigs: UserConfigsDto;
 
   @IsArray()
   @ApiProperty({
-    example: ['user'],
+    example: ['customer'],
+    required: true,
   })
   readonly roles: Role[];
 }

@@ -1,34 +1,32 @@
 import { Type } from 'class-transformer';
-import { IsEmail, IsString, Length, Matches, MinLength, ValidateNested } from 'class-validator';
+import { IsArray, IsEmail, IsString, Length, Matches, MinLength, ValidateNested } from 'class-validator';
 import { AddressDto } from './address.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { UserConfigsDto } from './userConfig.dto';
+import { Role } from '../schemas/user.schema';
 
-export class CreateCustomerAsUserDto {
+export class CreateUserAsAdminDto {
   @IsString()
   @MinLength(2)
   @ApiProperty({
     example: 'John Doe',
+    required: true,
   })
   readonly name: string;
 
   @IsString()
   @ApiProperty({
     example: 'MyCompany',
+    required: true,
   })
   readonly company: string;
 
   @IsEmail()
   @ApiProperty({
     example: 'John@gmail.com',
+    required: true,
   })
   readonly email: string;
-
-  @IsString()
-  @Length(8, 8)
-  @ApiProperty({
-    example: '12345678',
-  })
-  readonly cvr: string;
 
   @ApiProperty({ description: 'Password of the user', example: 'Mypassword123' })
   @IsString()
@@ -39,6 +37,13 @@ export class CreateCustomerAsUserDto {
   })
   readonly password: string;
 
+  @IsString()
+  @Length(8, 8)
+  @ApiProperty({
+    example: '12345678',
+  })
+  readonly cvr: string;
+
   @ValidateNested({ each: true })
   @Type(() => AddressDto)
   @ApiProperty()
@@ -48,4 +53,16 @@ export class CreateCustomerAsUserDto {
   @Type(() => AddressDto)
   @ApiProperty()
   readonly shippingAddress: AddressDto;
+
+  @ValidateNested({ each: true })
+  @Type(() => UserConfigsDto)
+  @ApiProperty()
+  readonly userConfigs: UserConfigsDto;
+
+  @IsArray()
+  @ApiProperty({
+    example: ['customer'],
+    required: true,
+  })
+  readonly roles: Role[];
 }

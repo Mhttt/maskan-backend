@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
-import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { verifyPassword } from 'src/common/util/password';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +12,7 @@ export class AuthService {
 
   async signIn(email: string, pass: string): Promise<{ access_token: string }> {
     const user = await this.userService.findOne(email.toLowerCase());
+    console.log(user);
     try {
       if (await verifyPassword(user.password, pass)) {
         const payload = { subject: user.password, email: user.email.toLowerCase(), roles: user.roles };

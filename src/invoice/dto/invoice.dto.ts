@@ -1,11 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNumber, IsString, Max, Min } from 'class-validator';
+import { IsNumber, IsString, Max, Min } from 'class-validator';
+import * as dayjs from 'dayjs';
 
 export class InvoiceDto {
-  @IsString()
-  @ApiProperty()
-  readonly _id: string;
-
   @IsString()
   @ApiProperty()
   readonly orderId: string;
@@ -18,17 +15,17 @@ export class InvoiceDto {
   @ApiProperty()
   readonly invoiceNumber: number;
 
-  @IsDate()
-  @ApiProperty()
-  readonly dateOfIssue: Date;
+  @IsString()
+  @ApiProperty({ example: dayjs(Date.now()).format('YYYY-MM-DDTHH:mm:ssZ[Z]') })
+  readonly dateOfIssue: string;
 
-  @IsDate()
-  @ApiProperty()
-  readonly dueDate: Date;
+  @IsString()
+  @ApiProperty({ example: dayjs(Date.now()).format('YYYY-MM-DDTHH:mm:ssZ[Z]') })
+  readonly dueDate: string;
 
-  @IsDate()
-  @ApiProperty()
-  readonly deliveryDate: Date;
+  @IsString()
+  @ApiProperty({ example: dayjs(Date.now()).format('YYYY-MM-DDTHH:mm:ssZ[Z]') })
+  readonly deliveryDate: string;
 
   @ApiProperty()
   @IsNumber()

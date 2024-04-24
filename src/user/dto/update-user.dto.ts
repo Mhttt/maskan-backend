@@ -1,36 +1,40 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsBoolean, IsEmail, IsNumber, IsString, Length, MinLength, ValidateNested } from 'class-validator';
-import { AddressDto } from './address.dto';
-import { InvoiceDto } from 'src/invoice/dto/invoice.dto';
-import { OrderDto } from 'src/order/dto/order.dto';
+import { IsArray, IsEmail, IsString, Length, MinLength, ValidateNested } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from 'src/user/schemas/user.schema';
+import { AddressDto } from './address.dto';
+import { OrderDto } from 'src/order/dto/order.dto';
+import { InvoiceDto } from 'src/invoice/dto/invoice.dto';
+import { UserConfigsDto } from './userConfig.dto';
 
-export class CustomerDto {
-  @IsString()
-  @ApiProperty()
-  readonly _id: string;
-
-  @IsString()
-  @ApiProperty()
-  readonly userId: string;
-
+export class UpdateCustomerDto {
   @IsString()
   @MinLength(2)
-  @ApiProperty()
+  @ApiProperty({
+    example: 'John Doe',
+    required: true,
+  })
   readonly name: string;
 
   @IsString()
-  @ApiProperty()
+  @ApiProperty({
+    example: 'MyCompany',
+    required: true,
+  })
   readonly company: string;
 
   @IsEmail()
-  @ApiProperty()
+  @ApiProperty({
+    example: 'John@gmail.com',
+    required: true,
+  })
   readonly email: string;
 
   @IsString()
   @Length(8, 8)
-  @ApiProperty()
+  @ApiProperty({
+    example: '12345678',
+  })
   readonly cvr: string;
 
   @ValidateNested({ each: true })
@@ -41,7 +45,7 @@ export class CustomerDto {
   @ValidateNested({ each: true })
   @Type(() => AddressDto)
   @ApiProperty()
-  readonly shippingAddress?: AddressDto;
+  readonly shippingAddress: AddressDto;
 
   @ValidateNested({ each: true })
   @Type(() => OrderDto)
@@ -53,17 +57,14 @@ export class CustomerDto {
   @ApiProperty({ type: () => InvoiceDto })
   readonly invoices: InvoiceDto[];
 
-  @IsBoolean()
+  @ValidateNested({ each: true })
+  @Type(() => UserConfigsDto)
   @ApiProperty()
-  readonly invoiceAllowed: boolean;
-
-  @IsNumber()
-  @ApiProperty()
-  readonly discountPercentage?: number;
+  readonly userConfigs: UserConfigsDto;
 
   @IsArray()
   @ApiProperty({
-    example: ['user'],
+    example: ['customer'],
     required: true,
   })
   readonly roles: Role[];
