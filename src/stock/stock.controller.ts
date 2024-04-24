@@ -22,7 +22,7 @@ export class StockController extends BaseController {
   @Roles(Role.ADMIN)
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Get all stock info of all products. Allows search as param for searching. Admins only',
+    summary: 'Get stock info of all products. Allows search as param for searching. Admins only',
   })
   @ApiResponse({ status: HttpStatus.OK, type: [StockDto] })
   @ApiErrorDecorator(HttpStatus.UNAUTHORIZED, 'Unathorized', 'Not authorized')
@@ -71,7 +71,7 @@ export class StockController extends BaseController {
   @Roles(Role.ADMIN)
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Update one or more products by id. Admins only',
+    summary: 'Update stock of one or more products by id. Admins only',
   })
   @ApiBody({
     type: [UpdateStockBulkDto],

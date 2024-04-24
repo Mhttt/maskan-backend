@@ -7,7 +7,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Role } from 'src/user/schemas/user.schema';
 import { UserConfigsDto } from './userConfig.dto';
 
-export class CustomerDto {
+export class UserDto {
   @IsString()
   @ApiProperty()
   readonly _id: string;

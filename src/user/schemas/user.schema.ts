@@ -14,7 +14,7 @@ export enum Role {
 
 @Schema()
 export class User extends Document {
-  @ApiProperty({ description: 'Name of the customer' })
+  @ApiProperty({ description: 'Name of the user' })
   @Prop({ required: true })
   name: string;
 
@@ -22,7 +22,7 @@ export class User extends Document {
   @Prop({ required: true })
   company: string;
 
-  @ApiProperty({ description: 'Email of the customer' })
+  @ApiProperty({ description: 'Email of the user' })
   @Prop({ required: true, unique: true })
   email: string;
 
@@ -50,7 +50,7 @@ export class User extends Document {
   @Prop({ type: [{ type: Invoice, ref: 'Invoice' }], required: false })
   invoices: Invoice[];
 
-  @ApiProperty({ description: 'User configuration for the customer' })
+  @ApiProperty({ description: 'User configuration for the user' })
   @Prop({ required: true })
   userConfigs: UserConfigs;
 

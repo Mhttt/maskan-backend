@@ -44,7 +44,7 @@ export class ProductService {
       const newProduct = await new this.productModel(product);
       return newProduct.save();
     } catch (error) {
-      throw new ConflictException('Error creating user');
+      throw new ConflictException('Error creating prouduct');
     }
   }
 
@@ -64,7 +64,7 @@ export class ProductService {
 
   async updateById(id: string, product: UpdateProductDto): Promise<UpdateProductDto> {
     if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException('The customer with the provided id was not found');
+      throw new NotFoundException('The product with the provided id was not found');
     }
 
     return await this.productModel.findByIdAndUpdate(id, product, {
@@ -75,7 +75,7 @@ export class ProductService {
 
   async deleteById(id: string): Promise<Product> {
     if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException('The customer with the provided id was not found');
+      throw new NotFoundException('The product with the provided id was not found');
     }
 
     return await this.productModel.findByIdAndDelete(id);

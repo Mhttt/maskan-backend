@@ -17,7 +17,7 @@ export class AuthController {
   })
   @ApiResponse({ status: HttpStatus.CREATED, description: 'Returns access token' })
   @ApiErrorDecorator(HttpStatus.UNAUTHORIZED, 'Unathorized', 'Not authorized')
-  @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'Customer not found')
+  @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'User not found')
   signIn(@Body(ValidationPipe) signInDto: SignInDto) {
     return this.authService.signIn(signInDto.email, signInDto.password);
   }

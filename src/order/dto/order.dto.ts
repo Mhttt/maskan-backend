@@ -20,7 +20,7 @@ enum OrderStatus {
 export class OrderDto {
   @IsString()
   @ApiProperty()
-  readonly customerId: string;
+  readonly UserId: string;
 
   @IsString()
   @ApiProperty()

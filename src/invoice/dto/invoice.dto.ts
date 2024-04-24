@@ -9,7 +9,7 @@ export class InvoiceDto {
 
   @IsString()
   @ApiProperty()
-  readonly customerId: string;
+  readonly userId: string;
 
   @IsNumber()
   @ApiProperty()

@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Val
 import { IUserQueryString, UserService } from './user.service';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiErrorDecorator } from 'src/common/decorator/error/error.decorator';
-import { UpdateCustomerDto } from './dto/update-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { SuccessDto } from 'src/common/dto/success.dto';
 import { ApiSuccessDecorator } from 'src/common/decorator/error/success.decorator';
 import { Roles } from 'src/common/decorator/error/roles.decorator';
@@ -87,15 +87,15 @@ export class UserController extends BaseController {
   @ApiOperation({
     summary: 'Update a single user by id. Admins only',
   })
-  @ApiResponse({ status: HttpStatus.OK, type: UpdateCustomerDto })
+  @ApiResponse({ status: HttpStatus.OK, type: UpdateUserDto })
   @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'The user with the provided id was not found')
   @ApiErrorDecorator(HttpStatus.BAD_REQUEST, 'Bad Request', 'Invalid user input')
   async updateUser(
     @Param('id')
     id: string,
     @Body(ValidationPipe)
-    user: UpdateCustomerDto,
-  ): Promise<UpdateCustomerDto> {
+    user: UpdateUserDto,
+  ): Promise<UpdateUserDto> {
     return this.userService.updateById(id, user);
   }
 
@@ -114,6 +114,44 @@ export class UserController extends BaseController {
     await this.userService.deleteById(id);
     return {
       message: 'User was successfully deleted',
+      status_code: HttpStatus.OK,
+    };
+  }
+
+  @Roles(Role.ADMIN)
+  @Put(':id/approve')
+  @ApiBearerAuth()
+  @ApiSuccessDecorator(HttpStatus.OK, 'User was successfully approved')
+  @ApiOperation({
+    summary: 'Approve a single user by id. Admins only',
+  })
+  @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'The user with the provided id was not found')
+  async approveUser(
+    @Param('id')
+    id: string,
+  ): Promise<SuccessDto> {
+    await this.userService.approveUser(id);
+    return {
+      message: 'User was successfully approved',
+      status_code: HttpStatus.OK,
+    };
+  }
+
+  @Roles(Role.ADMIN)
+  @Put(':id/reject')
+  @ApiBearerAuth()
+  @ApiSuccessDecorator(HttpStatus.OK, 'User was successfully rejected')
+  @ApiOperation({
+    summary: 'Reject a single user by id. Admins only',
+  })
+  @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'The user with the provided id was not found')
+  async rejectUser(
+    @Param('id')
+    id: string,
+  ): Promise<SuccessDto> {
+    await this.userService.rejectUser(id);
+    return {
+      message: 'User was successfully rejected',
       status_code: HttpStatus.OK,
     };
   }

@@ -7,11 +7,11 @@ export type InvoiceDocument = HydratedDocument<Invoice>;
 export class Invoice extends Document {
   @Prop({
     type: Types.ObjectId,
-    ref: 'Customer',
+    ref: 'User',
     required: true,
   })
   @ApiProperty()
-  CustomerId: Types.ObjectId;
+  UserId: Types.ObjectId;
 
   @Prop({
     type: Types.ObjectId,

@@ -1,12 +1,13 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { UpdateCustomerDto } from './dto/update-user.dto';
 import { Role, User } from 'src/user/schemas/user.schema';
 import { CreateUserAsAdminDto } from './dto/create-user-admin.dto';
 import { CreateUserAsCustomerDto } from './dto/create-user-customer.dto';
 import { UserAuthDto } from './dto/user-auth-dto';
 import { encryptPassword } from 'src/common/util/password';
+import { ApprovalStatus, UserPermissions } from './schemas/userconfig.schema';
+import { UpdateUserDto } from './dto/update-user.dto';
 export interface IUserQueryString {
   search: string;
   page: number;
@@ -73,9 +74,9 @@ export class UserService {
         email: user.email.toLowerCase(),
         password: hash,
         userConfigs: {
-          isApproved: false,
+          approvalStatus: ApprovalStatus.PENDING,
           discountPercentage: 0,
-          invoiceAllowed: false,
+          userPermissions: [UserPermissions.CCALLOWED],
         },
         roles: [Role.CUSTOMER],
       });
@@ -86,17 +87,17 @@ export class UserService {
   }
 
   async findOne(email: string): Promise<UserAuthDto> {
-    const customer = await this.userModel.findOne({ email: email.toLowerCase() });
+    const user = await this.userModel.findOne({ email: email.toLowerCase() });
 
-    if (!customer) {
-      throw new NotFoundException('Customer not found');
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
 
     return {
-      _id: customer._id.toString(),
-      email: customer.email.toLowerCase(),
-      password: customer.password,
-      roles: customer.roles,
+      _id: user._id.toString(),
+      email: user.email.toLowerCase(),
+      password: user.password,
+      roles: user.roles,
     };
   }
 
@@ -114,9 +115,9 @@ export class UserService {
     return user;
   }
 
-  async updateById(id: string, user: UpdateCustomerDto): Promise<UpdateCustomerDto> {
+  async updateById(id: string, user: UpdateUserDto): Promise<UpdateUserDto> {
     if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException('The customer with the provided id was not found');
+      throw new NotFoundException('The user with the provided id was not found');
     }
 
     return await this.userModel.findByIdAndUpdate(id, user, {
@@ -127,7 +128,7 @@ export class UserService {
 
   async deleteById(id: string): Promise<User> {
     if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException('The customer with the provided id was not found');
+      throw new NotFoundException('The user with the provided id was not found');
     }
 
     return await this.userModel.findByIdAndDelete(id);
@@ -135,7 +136,7 @@ export class UserService {
 
   async approveUser(id: string): Promise<User> {
     if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException('The customer with the provided id was not found');
+      throw new NotFoundException('The user with the provided id was not found');
     }
 
     const user = await this.userModel.findById(id);
@@ -144,7 +145,22 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
 
-    user.userConfigs.isApproved = true; // Update isApproved field
+    user.userConfigs.approvalStatus = ApprovalStatus.APPROVED;
+    return await user.save();
+  }
+
+  async rejectUser(id: string): Promise<User> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException('The user with the provided id was not found');
+    }
+
+    const user = await this.userModel.findById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    user.userConfigs.approvalStatus = ApprovalStatus.REJECTED;
     return await user.save();
   }
 }

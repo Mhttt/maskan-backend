@@ -19,10 +19,10 @@ export enum OrderStatus {
 export class Order extends Document {
   @Prop({
     type: Types.ObjectId,
-    ref: 'Customer',
+    ref: 'User',
     required: true,
   })
-  customerId: Types.ObjectId;
+  userId: Types.ObjectId;
 
   @Prop({
     type: Types.ObjectId,
