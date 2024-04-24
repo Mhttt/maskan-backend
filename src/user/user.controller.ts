@@ -87,6 +87,7 @@ export class UserController extends BaseController {
   @ApiOperation({
     summary: 'Update a single user by id. Admins only',
   })
+  @ApiResponse({ status: HttpStatus.OK, type: UpdateCustomerDto })
   @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'The user with the provided id was not found')
   @ApiErrorDecorator(HttpStatus.BAD_REQUEST, 'Bad Request', 'Invalid user input')
   async updateUser(

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import mongoose, { HydratedDocument } from 'mongoose';
+import mongoose, { Document, HydratedDocument } from 'mongoose';
 export type ProductDocument = HydratedDocument<Product>;
 
 export const variantSchema = new mongoose.Schema({
@@ -10,9 +10,9 @@ export const variantSchema = new mongoose.Schema({
 });
 
 @Schema()
-export class Product {
+export class Product extends Document {
   @ApiProperty({ description: 'Name of the product' })
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   name: string;
 
   @ApiProperty({ description: 'Description of the product' })

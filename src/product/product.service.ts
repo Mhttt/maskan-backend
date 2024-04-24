@@ -4,12 +4,10 @@ import { Product } from './schemas/product.schema';
 import { Model, Types } from 'mongoose';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CreateProductDto } from './dto/create-product.dto';
-
 export interface IProductQueryString {
   search: string;
   page: number;
 }
-
 @Injectable()
 export class ProductService {
   constructor(

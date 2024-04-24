@@ -66,6 +66,7 @@ export class ProductController extends BaseController {
   @ApiOperation({
     summary: 'Update a single product by id. Admins only',
   })
+  @ApiResponse({ status: HttpStatus.OK, type: UpdateProductDto })
   @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'The product with the provided id was not found')
   @ApiErrorDecorator(HttpStatus.BAD_REQUEST, 'Bad Request', 'Invalid product input')
   async updateProduct(
