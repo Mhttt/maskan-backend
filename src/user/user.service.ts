@@ -132,4 +132,19 @@ export class UserService {
 
     return await this.userModel.findByIdAndDelete(id);
   }
+
+  async approveUser(id: string): Promise<User> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException('The customer with the provided id was not found');
+    }
+
+    const user = await this.userModel.findById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    user.userConfigs.isApproved = true; // Update isApproved field
+    return await user.save();
+  }
 }

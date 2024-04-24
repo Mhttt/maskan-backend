@@ -1,13 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import mongoose, { Document, HydratedDocument } from 'mongoose';
+import { Document, HydratedDocument } from 'mongoose';
+import { ProductVariant } from './variant.schema';
 export type ProductDocument = HydratedDocument<Product>;
-
-export const variantSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  images: { type: [String], required: true },
-});
 
 @Schema()
 export class Product extends Document {
@@ -32,8 +27,8 @@ export class Product extends Document {
   sku: string;
 
   @ApiProperty({ description: 'Object containing information about the variant' })
-  @Prop({ type: [variantSchema], required: false })
-  variant?: { name: string; description: string; images: string[] }[];
+  @Prop({ required: false })
+  variant?: ProductVariant[];
 
   @ApiProperty({ description: 'List of image links for the product' })
   @Prop({ required: true })
