@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Request, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignInDto } from './dto/signin.dto';
@@ -20,5 +20,10 @@ export class AuthController {
   @ApiErrorDecorator(HttpStatus.NOT_FOUND, 'Not found', 'User not found')
   signIn(@Body(ValidationPipe) signInDto: SignInDto) {
     return this.authService.signIn(signInDto.email, signInDto.password);
+  }
+
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }

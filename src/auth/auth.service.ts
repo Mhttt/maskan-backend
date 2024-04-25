@@ -14,7 +14,7 @@ export class AuthService {
     const user = await this.userService.findOne(email.toLowerCase());
     try {
       if (await verifyPassword(user.password, pass)) {
-        const payload = { subject: user.password, email: user.email.toLowerCase(), roles: user.roles };
+        const payload = { subject: user._id, email: user.email.toLowerCase(), roles: user.roles };
         return {
           access_token: await this.jwtService.signAsync(payload),
         };
