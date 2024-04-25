@@ -24,11 +24,8 @@ export class Order extends Document {
   })
   userId: Types.ObjectId;
 
-  @Prop({
-    type: Types.ObjectId,
-    ref: 'Invoice',
-  })
-  invoiceId: Types.ObjectId;
+  @Prop({ required: true })
+  invoiceNumber: number;
 
   @Prop({ required: true })
   price: string;
