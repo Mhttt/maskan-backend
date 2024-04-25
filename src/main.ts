@@ -24,16 +24,13 @@ async function bootstrap() {
     .setTitle('Maskan API Documentation')
     .setDescription('This page documents the entire API behind Maskan')
     .setVersion('1.0')
-    .addBearerAuth(
-      {
-        description: `Please enter token in following format: Bearer <JWT>`,
-        name: 'Authorization',
-        scheme: 'Bearer',
-        type: 'http',
-        in: 'Header',
-      },
-      'access_token', // Match this name with @ApiBearerAuth() in controller
-    )
+    .addBearerAuth({
+      description: `Please enter token in following format: Bearer <JWT>`,
+      name: 'Authorization',
+      scheme: 'Bearer',
+      type: 'http',
+      in: 'Header',
+    })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {

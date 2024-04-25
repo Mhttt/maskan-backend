@@ -26,7 +26,7 @@ export class AuthController {
 
   @Roles(Role.ADMIN)
   @Get('profile')
-  @ApiBearerAuth('access_token') //edit here
+  @ApiBearerAuth() //edit here
   getProfile(@Request() req) {
     return req.user;
   }
