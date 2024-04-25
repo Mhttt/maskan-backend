@@ -155,4 +155,16 @@ export class UserController extends BaseController {
       status_code: HttpStatus.OK,
     };
   }
+
+  @Get('/pending')
+  @Roles(Role.ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Get all users with status "pending". Admins only',
+  })
+  @ApiResponse({ status: HttpStatus.OK, type: [User] })
+  @ApiErrorDecorator(HttpStatus.UNAUTHORIZED, 'Unathorized', 'Not authorized')
+  async getUsersPending(): Promise<User[]> {
+    return this.userService.findAllPending();
+  }
 }

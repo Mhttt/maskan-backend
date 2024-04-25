@@ -41,6 +41,10 @@ export class UserService {
     return users;
   }
 
+  async findAllPending(): Promise<User[]> {
+    return await this.userModel.find({ 'userConfigs.approvalStatus': ApprovalStatus.PENDING });
+  }
+
   async createAsAdmin(user: CreateUserAsAdminDto): Promise<User> {
     const exists = await this.userModel.exists({ email: user.email.toLowerCase() });
     if (exists) {
