@@ -1,52 +1,45 @@
 import { ShippingDetailsDto } from './shippingdetails.dto';
-import { ProductDto } from 'src/product/dto/product.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsArray, IsNumber, IsString, ValidateNested } from 'class-validator';
 import * as dayjs from 'dayjs';
+import { ProductItem } from '../schemas/order.schema';
 
 enum PaymentMethod {
-  CREDITCARD = 'CREDITCARD',
-  INVOICE = 'INVOICE',
+  CREDITCARD = 'CreditCard',
+  INVOICE = 'Invoice',
 }
 
 enum OrderStatus {
-  PENDING = 'PENDING',
-  PROCESSING = 'PROCESSING',
-  SHIPPED = 'SHIPPED',
-  DELIVERED = 'DELIVERED',
+  PENDING = 'Pending',
+  PROCESSING = 'Proccessing',
+  SHIPPED = 'Shipped',
+  DELIVERED = 'Delivered',
 }
 
 export class CreateOrderDto {
   @IsString()
-  @ApiProperty()
-  readonly UserId: string;
-
-  @IsString()
-  @ApiProperty()
-  readonly invoiceId: string;
+  @ApiProperty({ example: '60f1b3b3b9b1f3f3b4b1f3f3' })
+  readonly userId: string;
 
   @IsNumber()
-  @ApiProperty()
+  @ApiProperty({ example: 100 })
   readonly price: number;
 
   @IsString()
-  @ApiProperty({ example: dayjs(Date.now()).format('YYYY-MM-DDTHH:mm:ssZ[Z]') })
+  @ApiProperty({ example: dayjs(Date.now()).format('YYYY-MM-DDTHH:mm:ssZ') })
   readonly orderDate: string;
 
   @ValidateNested({ each: true })
-  @Type(() => ShippingDetailsDto)
   @ApiProperty()
   readonly shippingDetails: ShippingDetailsDto;
 
-  @ApiProperty()
+  @ApiProperty({ example: PaymentMethod.CREDITCARD })
   readonly paymentMethod: PaymentMethod;
 
-  @ValidateNested({ each: true })
-  @Type(() => ProductDto)
-  @ApiProperty()
-  readonly products: ProductDto[];
+  @IsArray()
+  @ApiProperty({ type: [ProductItem] })
+  readonly products: ProductItem[];
 
-  @ApiProperty()
+  @ApiProperty({ example: OrderStatus.PENDING })
   readonly status: OrderStatus;
 }
