@@ -4,6 +4,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignInDto } from './dto/signin.dto';
 import { Public } from 'src/common/decorator/error/routeAuth.decorator';
 import { ApiErrorDecorator } from 'src/common/decorator/error/error.decorator';
+import { Roles } from 'src/common/decorator/error/roles.decorator';
+import { Role } from 'src/user/schemas/user.schema';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -22,6 +24,7 @@ export class AuthController {
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
+  @Roles(Role.ADMIN)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;

@@ -15,8 +15,9 @@ export class AuthService {
     try {
       if (await verifyPassword(user.password, pass)) {
         const payload = { subject: user._id, email: user.email.toLowerCase(), roles: user.roles };
+        const token = await this.jwtService.signAsync(payload, { secret: process.env.JWT_SECRET });
         return {
-          access_token: await this.jwtService.signAsync(payload),
+          access_token: token,
         };
       } else {
         throw new UnauthorizedException('The password is incorrect');
