@@ -10,8 +10,8 @@ export class ShippingDetailsDto {
   readonly deliveryAddress: string;
 
   @IsString()
-  @ApiProperty({ example: dayjs(Date.now()).format('YYYY-MM-DDTHH:mm:ssZ[Z]') })
-  readonly shipDate: string;
+  @ApiProperty({ example: dayjs(Date.now()).format('YYYY-MM-DDTHH:mm:ssZ') })
+  readonly shippingDate: string;
 
   @IsString()
   @ApiProperty()
